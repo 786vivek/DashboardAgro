@@ -122,8 +122,6 @@ span.price {
     margin-bottom: 20px;
   }
 }
-</style>
-
 
 </style>
 </head>
@@ -134,19 +132,23 @@ span.price {
 
 
 <script>
-	$(document)
-			.ready(
-					function() {
-						$("#allpesticide").hide();
-			
+$(document)
+.ready(
+		function() {
+//alert();
+// var cc=${productname};
+// alert(cc);
+
+		$(window).on('load', function () {             
+            var springAttribute= '${productname}';
+            var amount= '${amount}';
+            $("#productname").val(springAttribute)
+            $("#amount").val(amount);
+           
+            // alert(springAttribute);    
+		});
 	
-					
-					
-					
-					});
-	
-	
-	
+		});
 
 	</script>
 <body>
@@ -160,10 +162,12 @@ i am payment
 <div class="row">
   <div class="col-75">
     <div class="container">
+
       <form action="/paymentprocess">
       
         <div class="row">
           <div class="col-50">
+              <p>${amount}<br>${productname}</p>
             <h3>Billing Address</h3>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
@@ -173,6 +177,8 @@ i am payment
             <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
             <label for="city"><i class="fa fa-institution"></i> City</label>
             <input type="text" id="city" name="city" placeholder="New York">
+
+
 
             <div class="row">
               <div class="col-50">
@@ -184,6 +190,9 @@ i am payment
                 <input type="text" id="zip" name="zip" placeholder="10001">
               </div>
             </div>
+          <label for="city"><i class="fa fa-object"></i> ProductName</label>
+            <input type="text" id="productname" name="productname"  readonly>
+        
           </div>
 
           <div class="col-50">
@@ -209,6 +218,10 @@ i am payment
               <div class="col-50">
                 <label for="cvv">CVV</label>
                 <input type="text" id="cvv" name="cvv" placeholder="352">
+              </div>
+              <div class="col-50">
+                <label for="amount">amount</label>
+                <input type="text" id="amount" name="amount"  readonly>
               </div>
             </div>
           </div>

@@ -197,7 +197,7 @@ alert("queries");
 												getemail = val;
 
 											}
-											if ((ind === "productname") || (ind === "id") || (ind === "queries") || (ind === "answer")) {
+											if ((ind === "productname")  || (ind === "query")){
 												row = "<td>"
 													+ val//
 													+ "</td>";												
@@ -302,8 +302,8 @@ error : function() {
 				<table class="table table-striped" id="table">
 					<thead>
 						<tr>
-							<th width="15%"
-								style="color: red ! important; text-align: left ! important;">ID</th>
+<!-- 							<th width="15%" -->
+<!-- 								style="color: red ! important; text-align: left ! important;">ID</th> -->
 							<th width="20%"
 								style="color: red ! important; text-align: left ! important;">productName</th>
 							<th width="30%"
@@ -328,6 +328,6 @@ type ur answer here</textarea>
 		
 		  <input type="submit" value="Submit" id="submitanswer">
 </div>
-			<a href="logout">LogOut</a>
+		
 </body>
 </html>

@@ -26,11 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.agro.main.model.Admin;
 import com.agro.main.model.Feedback;
+import com.agro.main.model.Order;
 import com.agro.main.model.Pesticide;
+import com.agro.main.model.Query;
 import com.agro.main.repository.AdminRepo;
 import com.agro.main.repository.FeedbackRepo;
-import com.agro.main.repository.HistoryRepo;
+import com.agro.main.repository.OrderRepo;
 import com.agro.main.repository.PesticideRepo;
+import com.agro.main.repository.QueryRepo;
 import com.agro.main.service.AdminService;
 import com.agro.main.vo.AdminVo;
 
@@ -50,7 +53,10 @@ public class HomeController {
 	PesticideRepo pesticideRepo;
 
 	@Autowired
-	HistoryRepo historyRepo;
+	OrderRepo orderRepo;
+
+	@Autowired
+	QueryRepo queryRepo;
 
 	int adminid;
 
@@ -66,35 +72,33 @@ public class HomeController {
 		String check;
 		System.out.println("adminvo==	==>" + adminVo.toString());
 		model.addAttribute("admin", new AdminVo());
-		
-		if(("wholesellerbuyer").equalsIgnoreCase(adminVo.getType()) || ("farmer").equalsIgnoreCase(adminVo.getType()) || ("expert").equalsIgnoreCase(adminVo.getType()) || ("admin").equalsIgnoreCase(adminVo.getType())) {
-			
-			
-			 check = adminService.checkCredentials(adminVo);
-		
-	
-		System.out.println("page name type====>" + check);
-		System.out.println("adminvo id" + adminVo.getId());
 
-		adminid = adminVo.getId();
-		System.out.println(adminVo.toString());
-		model.addAttribute("adminname",adminVo.getUsername().toUpperCase());
-		model.addAttribute("type",adminVo.getType().toUpperCase());
-		
-		System.out.println(adminVo.getUsername());
-		System.out.println("admindvvk" + adminid);
+		if (("wholesellerbuyer").equalsIgnoreCase(adminVo.getType()) || ("farmer").equalsIgnoreCase(adminVo.getType())
+				|| ("expert").equalsIgnoreCase(adminVo.getType()) || ("admin").equalsIgnoreCase(adminVo.getType())) {
 
-		if ("expert".equalsIgnoreCase(adminVo.getType())) {
-			if ("1".equalsIgnoreCase(adminVo.getApproved())) {
-				model.addAttribute("approvedstatus", "you are approved by admin");
+			check = adminService.checkCredentials(adminVo);
 
-			} else {
-				model.addAttribute("approvedstatus", "you are not approved by admin");
+			System.out.println("page name type====>" + check);
+			System.out.println("adminvo id" + adminVo.getId());
+
+			adminid = adminVo.getId();
+			System.out.println(adminVo.toString());
+			model.addAttribute("adminname", adminVo.getUsername().toUpperCase());
+			model.addAttribute("type", adminVo.getType().toUpperCase());
+
+			System.out.println(adminVo.getUsername());
+			System.out.println("admindvvk" + adminid);
+
+			if ("expert".equalsIgnoreCase(adminVo.getType())) {
+				if ("1".equalsIgnoreCase(adminVo.getApproved())) {
+					model.addAttribute("approvedstatus", "you are approved by admin");
+
+				} else {
+					model.addAttribute("approvedstatus", "you are not approved by admin");
+				}
+
 			}
-
-		}
-		}
-		else {
+		} else {
 			return "error.jsp";
 		}
 		return check + ".jsp";
@@ -127,23 +131,28 @@ public class HomeController {
 
 	@RequestMapping("/paymentprocess")
 	public String paymentprocess(Model model) {
-		// session.setAttribute("ses",1);
-		System.out.println("signup");
-		System.out.println("sigunpstart");
+
 		model.addAttribute("userVo", new AdminVo());
 		return "paymentprocess.jsp";
 	}
-	
+
 	@GetMapping("/payment")
-	public String payment(Model model) {
-		// session.setAttribute("ses",1);
-		System.out.println("signup");
-		System.out.println("sigunpstart");
-		model.addAttribute("userVo", new AdminVo());
+	public String payment(Model model, @RequestParam("productid") int id, @RequestParam("quantity") int quantity) {
+
+		System.out.println("payment" + id + "quantity" + quantity);
+
+		Optional<Pesticide> pesti = pesticideRepo.findById(id);
+
+		model.addAttribute("productname", pesti.get().getName());
+
+		int price=Integer.parseInt(pesti.get().getPrice());
+		int amm = quantity * price;
+
+		model.addAttribute("amount", Integer.toString(amm));
+
 		return "payment.jsp";
 	}
-	
-	
+
 	@PostMapping("/getdata")
 	public String Getdata(@Valid @ModelAttribute("admin") AdminVo adminVo, BindingResult result, ModelMap modell,
 			Model model) {
@@ -233,12 +242,10 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping(value = "saveuserdata")
 	public String getSearchResultViaAjax(@RequestBody @RequestParam("name") String username,
-			@RequestParam("password") String password, @RequestParam("type") String type,@RequestParam("address") String address,
-			@RequestParam("dob") String dob, @RequestParam("contactno") String contactno,@RequestParam("email") String email) {
+			@RequestParam("password") String password, @RequestParam("type") String type,
+			@RequestParam("address") String address, @RequestParam("dob") String dob,
+			@RequestParam("contactno") String contactno, @RequestParam("email") String email) {
 
-		
-		
-		
 		System.out.println("in ajax signup admin");
 		// logic
 
@@ -397,10 +404,6 @@ public class HomeController {
 		List<Pesticide> history = new ArrayList<>();
 		history = pesticideRepo.findAll();
 		System.out.println("history of products database=>" + history);
-		/*
-		 * try { BeanUtils.copyProperties(history, historyVo); } catch (Exception e) {
-		 * // TODO: handle exception e.getMessage(); e.printStackTrace(); }
-		 */
 
 		System.out.println("pesticide List=>" + history);
 
@@ -424,10 +427,6 @@ public class HomeController {
 		}
 
 		System.out.println("history of products database=>" + history);
-		/*
-		 * try { BeanUtils.copyProperties(history, historyVo); } catch (Exception e) {
-		 * // TODO: handle exception e.getMessage(); e.printStackTrace(); }
-		 */
 
 		System.out.println("pesticide List=>" + history);
 
@@ -456,10 +455,6 @@ public class HomeController {
 		}
 
 		System.out.println("history of products database=>" + history);
-		/*
-		 * try { BeanUtils.copyProperties(history, historyVo); } catch (Exception e) {
-		 * // TODO: handle exception e.getMessage(); e.printStackTrace(); }
-		 */
 
 		System.out.println("pesticide List=>" + history);
 
@@ -482,7 +477,7 @@ public class HomeController {
 			// int idi=Integer.parseInt(id);
 
 			// pesticideRepo.findById(idi);
-pesticide.setAddby(adminid);
+			pesticide.setAddby(adminid);
 			pesticide.setQuantity(quantity);
 			pesticide.setName(productname);
 			pesticide.setPrice(productprice);
@@ -494,10 +489,6 @@ pesticide.setAddby(adminid);
 		}
 
 		System.out.println("history of products database=>" + pesticide);
-		/*
-		 * try { BeanUtils.copyProperties(history, historyVo); } catch (Exception e) {
-		 * // TODO: handle exception e.getMessage(); e.printStackTrace(); }
-		 */
 
 		System.out.println("pesticide List=>" + pesticide);
 
@@ -505,117 +496,88 @@ pesticide.setAddby(adminid);
 
 	@ResponseBody
 	@GetMapping(value = "seequeries")
-	public List<Feedback> seequeries(Model model) {
+	public List<Query> seequeries(Model model) {
 
 		// List<HistoryVo> historyVo = null;
 
-		List<Feedback> history = new ArrayList<>();
-		history = feedbackRepo.findAll();
-		System.out.println("history of products database=>" + history);
+		List<Query> query = new ArrayList<>();
+		query = queryRepo.findAll();
 
-		/*
-		 * try { BeanUtils.copyProperties(history, historyVo); } catch (Exception e) {
-		 * // TODO: handle exception e.getMessage(); e.printStackTrace(); }
-		 */
+		System.out.println("history of products database=>" + query);
 
-		System.out.println("question feedback table List=>" + history);
-
-		return history;
+		return query;
 
 	};
 
-
-	
 	@ResponseBody
-	@GetMapping(value = "savefeedback")
-	public void getfeedback(Model model,@RequestParam("feedback")String getfeedback,@RequestParam("id") String id) {
+	@PostMapping(value = "savefeedback")
+	public void getfeedback(Model model, @RequestParam("feedback") String getfeedback, @RequestParam("id") int id) {
 
 		System.out.println("savinf feedback");
-Feedback feedback=new Feedback();
+		Feedback feedback = new Feedback();
 
-String adminidd=Integer.toString(adminid);
-feedback.setFeedbackid(adminidd);
+		String adminidd = Integer.toString(adminid);
 
-feedback.setProductname(id);
-		
-		
-		
+		Optional<Pesticide> pesti = pesticideRepo.findById(id);
+
+		feedback.setProductname(pesti.get().getName());
+		feedback.setProductid(Integer.toString(pesti.get().getId()));
+		feedback.setFeedback(getfeedback);
+		System.out.println(adminid);
+		feedback.setFeedbackid(adminidd);
+
+		feedbackRepo.save(feedback);
 	};
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@ResponseBody
 	@PostMapping(value = "saveanswer")
 	public void saveanser(@RequestParam(name = "answer") String answer, @RequestParam(name = "id") int id,
 			Model model) {
 
-		Optional<Feedback> ff = feedbackRepo.findById(id);
-		String adminidd=Integer.toString(adminid);
-if(ff.get().getAnswer()=="null" || ("").equalsIgnoreCase(ff.get().getAnswer())|| ff.get().getAnswer().equalsIgnoreCase(null) || ff.get().getExpertid()==adminidd)
-{
-	
-	ff.get().setAnswer(answer);
-	ff.get().setExpertid(adminidd);
+		Optional<Query> ff = queryRepo.findById(id);
+		Query query = new Query();
 
-	feedbackRepo.save(ff.get());
-}else {
-	Feedback feed=new Feedback();
-	
-	feed.setQueries(ff.get().getQueries());
-	feed.setProductname(ff.get().getProductname());
+		String adminidd = Integer.toString(adminid);
+		if (ff.get().getExpertid() == Integer.toString(adminid)) {
+			query.setId(ff.get().getId());
 
-	feed.setExpertid(adminidd);
-	feed.setAnswer(answer);
+		}
+		query.setAnswer(answer);
+		query.setQuery(ff.get().getQuery());
+		query.setQueryuserid(ff.get().getQueryuserid());
+		query.setProductname(ff.get().getProductname());
+		query.setProductid(ff.get().getProductid());
 
-	feedbackRepo.save(feed);
-}
-	
-	
+		query.setExpertid(adminidd);
 
-		System.out.println("save succesfully answer ");
+		queryRepo.save(query);
+
+		System.out.println("save succesfully query answer ");
 
 	};
 
-	
 	@ResponseBody
 	@PostMapping(value = "savequery")
-	public void savequery(@RequestParam(name = "query") String query, @RequestParam(name = "id") String id,
+	public void savequery(@RequestParam(name = "query") String queries, @RequestParam(name = "id") int id,
 			Model model) {
 		System.out.println("in savequery");
 		System.out.println(id);
-		int iid=Integer.parseInt(id); 
-		Optional<Pesticide> ff = pesticideRepo.findById(iid);
 
-		Feedback feedback=new Feedback();
-		
-		feedback.setProductname(ff.get().getName());	
-		feedback.setQueries(query);
-		
-		
-		
-		//ff.get().setQueries(answer);
-	//	ff.get().setExpertid(adminid);
-		feedbackRepo.save(feedback);
+		Optional<Pesticide> ff = pesticideRepo.findById(id);
+
+		Query query = new Query();
+
+		String idd = Integer.toString(id);
+		query.setProductid(idd);
+		query.setQuery(queries);
+		String adminidd = Integer.toString(adminid);
+		query.setQueryuserid(adminidd);
+		query.setProductname(ff.get().getName());
+
+		queryRepo.save(query);
+
 		System.out.println("save succesfully query");
 
 	};
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

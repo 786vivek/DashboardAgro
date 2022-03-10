@@ -8,15 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "history")
-public class History {
+@Table(name ="order")
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int id;
 	
-	@Column(name = "productname")
+	@Column(name = "productid")
 //	@NotNull
-	public String productname;
+	public String productid;
 	
 	@Column(name = "amount")
 //	@NotNull
@@ -57,13 +57,15 @@ public class History {
 	}
 
 
-	public String getProductname() {
-		return productname;
+
+
+	public String getProductid() {
+		return productid;
 	}
 
 
-	public void setProductname(String productname) {
-		this.productname = productname;
+	public void setProductid(String productid) {
+		this.productid = productid;
 	}
 
 
@@ -99,7 +101,7 @@ public class History {
 
 	@Override
 	public String toString() {
-		return "History [id=" + id + ", productname=" + productname + ", amount=" + amount + ", buyerId=" + buyerId
+		return "History [id=" + id + ", productid=" + productid + ", amount=" + amount + ", buyerId=" + buyerId
 				+ ", quantity=" + quantity + ", date=" + date + "]";
 	}
 

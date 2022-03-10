@@ -97,11 +97,111 @@ div.content {
 					function() {
 						$("#allpesticide").hide();
 						$("#pesticideadd").hide();
-						$("#answerbox").hide();
+						$("#feedbackform").hide();
+						$("#postquery").hide();
+						$("#productbuy").hide();
 						
 						//	alert();
 						
+				$(document).on('click', '#feedback', function() {
 					
+					$("#feedbackform").show();
+					
+					
+					
+				});	
+				
+				
+				$(document).on('click', '#postqueries', function()  {
+			$("#postquery").show();
+				
+				});
+				
+				
+				
+				
+				$("#buybutton").click(function(e) {
+					
+					alert();
+					alert(productid);
+					
+					var quantity=$("#orderquantity").val();
+					
+					
+					alert(quantity);
+			
+// 					$('<form method="post" action="test.asp" target="TheWindow">
+// 						       <input type="hidden" name="productid" value=productid>";
+// 						       ...
+// 						   </form>').submit();
+				
+						window.open('/payment?productid='+productid+'&quantity='+quantity, 'payment');
+					
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				});
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				var productid;
+				$("#submitanswer").click(function(e) {
+					//	alert();
+				var ans= $("#answertext").val();
+				productid=$("#feedback").val();
+						alert(answertext);
+						$.ajax({
+							url : 'savefeedback',
+							type : 'POSt',
+							data : {
+								"feedback" : ans,
+								"id":productid
+							},
+							success : function(response) {
+
+								var result = response;
+								console.log(result);
+
+							},
+							error : function() {
+								alert("error");
+							}	
+					});
+					});
+		
+				
+				
 	var farmerid;
 	$(document).on('click', '#submitanswer', function() {
 
@@ -130,7 +230,12 @@ alert(farmerid);
 						
 					
 					
-					
+			
+	
+	
+	
+	
+
 					
 					
 						
@@ -179,24 +284,44 @@ alert(farmerid);
 						
 						
 						
-						
-						$(document).on('click', '#postqueries', function() {
+// 	$(document).on('click', '#postqueries', function() {
+// alert();
+// 		$("#answerbox").show();
+// 							farmerid=$(this).attr('value');
 							
-							alert();
-							$("#answerbox").show();
-							farmerid=$(this).attr('value');
-							});
-										
+// 							$.ajax({
+
+// 								url : 'savequery',
+// 								type : 'POST',
+// 								data : {
+// 									"feedback" : ans,
+// 									"id":productid
+// 								},
+// 								success : function(response) {
+// 		console.log(response);
+// }
+// 							});
+					
+// 							}):			
 						
 						$(document).on('click', '#addproduct', function() {
+							$("#allpesticide").hide();
+						//	$("#pesticideadd").hide();
+							$("#answerbox").hide();
 							$("#pesticideadd").show();
-							  
+							$("#prductbuy").hide();
+								  
 							});	
 						
 						
-						
-						$(document).on('click', '#addpesti', function() {
-							  window.open('/payment', 'payment');
+						//var productid;
+						$(document).on('click', '#buypesti', function() {
+							alert();
+							
+							productid=$(this).attr('value');
+					
+							$("#productbuy").show();
+								
 							  return false;
 							});
 						
@@ -205,9 +330,9 @@ alert(farmerid);
 						
 						$( "#pesticidebutton" ).click(function(e) {
 							
-							  
-							  
-							$("#pesticide").hide();
+							$("#allpesticide").hide();
+							$("#pesticideadd").hide();
+							$("#answerbox").hide();
 							  
 							$("#tablepesticide tr:gt(0)").remove();
 					
@@ -273,7 +398,7 @@ $
 										//																myArray = response;
 									});
 					//																				temp += "<td><input type='button'value='edit' id='editbutton' email='" +getemail+ "'/></td>"
-					temp += "<td><button name='email' id='addpesti' type='submit' value='" +getemail+ "'>Buy</button><td><button name='email' id='postqueries' type='submit' value='" +getemail+ "'>Postquerie</button>";
+					temp += "<td><button name='email' id='buypesti' type='submit' value='" +getemail+ "'>Buy</button><td><button name='email' id='postqueries' type='submit' value='" +getemail+ "'>Postquerie</button><td><button name='email' id='feedback' type='submit' value='" +getemail+ "'>Feedback</button>";
 					temp += end;
 					table.innerHTML += temp;
 					console
@@ -376,24 +501,49 @@ table.innerHTML += temp;
 	<div id="pesticideadd">
 	
 	
-			productName:<input type="text" size="10" name="type" id="productname"><br>
-			price per kg:<input type="text" size="10" name="type" id="productprice"><br>
+			productName:<input type="text" size="10" name="type" id="productname" class="form-control"><br>
+			price:<input type="text" size="10" class="form-control" name="type" id="productprice"><br>
 	
-			quantity(total kgs):<input type="text" size="10" name="type" id="productquantity"><br>
-			
-			<button type="submit" value="" id="pestisidesignup">save product</button>
+			quantity:<input type="text" class="form-control" size="10" name="type" id="productquantity"><br>
+			<button type="submit"  class="form-control"  value="" id="pestisidesignup" style="color:blue;">add pesticide</button>
 		</div>
 
 <!-- 		<button type="submit" value="" id="addproduct">add product</button> -->
 	
 
-			<div id="answerbox">
-						<textarea id="answertext" name="answer" rows="4" cols="50">
-type ur query</textarea>
-				
+			<div id="feedbackform">
+					<label for="fname">Rating out of five</label>
+  <input type="text" id="answertext" name="fname"><br><br>
+		
 		  <input type="submit" value="Submit" id="submitanswer">
 </div>
+	
+				<div id="postquery">
+					<label for="fname">post queries</label>
+  <input type="text" id="query" name="fname"><br><br>
 		
+		  <input type="submit" value="Submit" id="submitquery">
+</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			<div id="productbuy">
+	
+			quantity:<input type="text" class="form-control" size="10" name="orderquantity" id="orderquantity"><br>
+			<button type="submit"  class="form-control"  value="" id="buybutton" style="color:blue;">BUY</button>
+		</div>
+			
 
 </body>
 </html>

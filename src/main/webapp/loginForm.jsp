@@ -108,6 +108,7 @@ $(document).ready(function() {
 
 <div class="sidebar">
   <a class="active" href="">Home</a>
+  <a href="signup">Signup</a>
 <!--   <a href="#news">News</a> -->
 <!--   <a href="#contact">Contact</a> -->
 <!--   <a href="#about">About</a> -->
@@ -170,8 +171,8 @@ $(document).ready(function() {
 
 <br>
 
-<label>signup to register </label><br>
-<a href="signup">signup</a>
+
+	
 </div></div>
 </body>
 </html>

@@ -105,18 +105,19 @@ div.content {
 							  window.open('/payment', 'payment');
 							  return false;
 							});
-						
+						var productid;
 
 						$("#submitanswer").click(function(e) {
-							alert();
+						//	alert();
 					var ans= $("#answertext").val();
+					productid=$("#feedback").val();
 							alert(answertext);
 							$.ajax({
 								url : 'savefeedback',
 								type : 'POSt',
 								data : {
 									"feedback" : ans,
-									"id":expertid
+									"id":productid
 								},
 								success : function(response) {
 
@@ -130,9 +131,10 @@ div.content {
 						});
 						});
 						
-						
+					
 						$(document).on('click', '#feedback', function() {
 							$("#feedbackform").show(); 
+							
 							  return false;
 							});
 						
@@ -326,7 +328,7 @@ table.innerHTML += temp;
 				</table>
 			</div>
 			<div id="feedbackform">
-					<label for="fname" id="answertext">Rating out of five</label>
+					<label for="fname">Rating out of five</label>
   <input type="text" id="answertext" name="fname"><br><br>
 		
 		  <input type="submit" value="Submit" id="submitanswer">

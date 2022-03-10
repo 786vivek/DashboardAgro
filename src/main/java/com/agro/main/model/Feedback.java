@@ -12,7 +12,21 @@ import javax.persistence.Table;
 public class Feedback {
 
 	
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int id;
 	
+	@Column(name = "productid")
+	public String productid;
+
+	@Column(name = "productname")
+	public String productname;
+	
+
+
+
 	public String getProductname() {
 		return productname;
 	}
@@ -21,23 +35,15 @@ public class Feedback {
 		this.productname = productname;
 	}
 
-	public String getAnswer() {
-		return answer;
+	public String getProductid() {
+		return productid;
 	}
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public void setProductid(String productid) {
+		this.productid = productid;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int id;
-	
-	@Column(name = "productname")
-	public String productname;
-	
-	@Column(name = "queries")
-	public String queries;
+
 
 	@Column(name = "feedbackid")
 	public String feedbackid;
@@ -52,14 +58,8 @@ public class Feedback {
 		this.feedbackid = feedbackid;
 	}
 
-	@Column(name = "answer")
-	public String answer;
 
 
-	@Column(name = "expertid")
-	public String expertid;
-																																															
-	
 	@Column(name = "feeedback")
 	public String feedback;
 
@@ -73,19 +73,8 @@ public class Feedback {
 		this.feedback = feedback;
 	}
 
-	public String getExpertid() {
-		return expertid;
-	}
 
-	public void setExpertid(String expertid) {
-		this.expertid = expertid;
-	}
 
-	@Override
-	public String toString() {
-		return "Feedback [id=" + id + ", productname=" + productname + ", queries=" + queries + ", feedbackid="
-				+ feedbackid + ", answer=" + answer + ", expertid=" + expertid + ", feedback=" + feedback + "]";
-	}
 
 
 	public int getId() {
@@ -96,15 +85,14 @@ public class Feedback {
 		this.id = id;
 	}
 
-
-
-	public String getQueries() {
-		return queries;
+	@Override
+	public String toString() {
+		return "Feedback [id=" + id + ", productid=" + productid + ", productname=" + productname + ", feedbackid="
+				+ feedbackid + ", feedback=" + feedback + "]";
 	}
 
-	public void setQueries(String queries) {
-		this.queries = queries;
-	}
+
+
 	
 	
 	
