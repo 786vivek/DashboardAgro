@@ -32,24 +32,12 @@ public class Order {
 	public String quantity;
 
 	
-	@Column(name = "buyingdate")
+	@Column(name = "orderdate")
 //	@NotNull
-	public String date;
+	public String orderdate;
 
 
-	public String getDate() {
-		return date;
-	}
 
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-
-	public int getId() {
-		return id;
-	}
 
 
 	public void setId(int id) {
@@ -99,11 +87,35 @@ public class Order {
 	}
 
 
+
+
+	public String getOrderdate() {
+		return orderdate;
+	}
+
+
+
+
+	public void setOrderdate(String orderdate) {
+		this.orderdate = orderdate;
+	}
+
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+
 	@Override
 	public String toString() {
-		return "History [id=" + id + ", productid=" + productid + ", amount=" + amount + ", buyerId=" + buyerId
-				+ ", quantity=" + quantity + ", date=" + date + "]";
+		return "Order [id=" + id + ", productid=" + productid + ", amount=" + amount + ", buyerId=" + buyerId
+				+ ", quantity=" + quantity + ", orderdate=" + orderdate + "]";
 	}
+
 
 
 
