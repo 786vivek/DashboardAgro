@@ -1,11 +1,14 @@
 package com.agro.main.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -38,7 +41,7 @@ import com.agro.main.service.AdminService;
 import com.agro.main.vo.AdminVo;
 
 @Controller
-public class HomeController {
+public class HomeController    {
 
 	@Autowired
 	AdminRepo adminRepo;
@@ -59,7 +62,22 @@ public class HomeController {
 	QueryRepo queryRepo;
 
 	int adminid;
+	int productid;
 
+
+	
+	
+	
+	
+	/*
+	 * @GetMapping("/reactget") public String reactget(@RequestParam("email") String
+	 * email, @RequestParam("password") String password ) { //
+	 * model.addAttribute("string", model);
+	 * 
+	 * String response ="ract get request "; return response;
+	 * 
+	 * }
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("admin") AdminVo adminVo, BindingResult result, ModelMap modell,
 			Model model, HttpSession session) {
@@ -130,25 +148,29 @@ public class HomeController {
 	}
 
 	@RequestMapping("/paymentprocess")
-	public String paymentprocess(Model model) {
+	public String paymentprocess(Model model, @RequestParam("amount") String amount,
+			@RequestParam("quantity") String quantity) {
 
-		model.addAttribute("userVo", new AdminVo());
+		Order order = new Order();
+		order.setProductid(Integer.toString(productid));
+		order.setBuyerId(Integer.toString(adminid));
+		order.setAmount(amount);
+		order.setQuantity(quantity);
+		orderRepo.save(order);
+		model.addAttribute("order", "suceesfully order");
 		return "paymentprocess.jsp";
 	}
 
 	@GetMapping("/payment")
 	public String payment(Model model, @RequestParam("productid") int id, @RequestParam("quantity") int quantity) {
-
-		System.out.println("payment" + id + "quantity" + quantity);
-
+		productid = id;
 		Optional<Pesticide> pesti = pesticideRepo.findById(id);
-
 		model.addAttribute("productname", pesti.get().getName());
+		int price = Integer.parseInt(pesti.get().getPrice());
+		int amount = quantity * price;
+		model.addAttribute("amount", Integer.toString(amount));
 
-		int price=Integer.parseInt(pesti.get().getPrice());
-		int amm = quantity * price;
-
-		model.addAttribute("amount", Integer.toString(amm));
+		model.addAttribute("quantity", Integer.toString(quantity));
 
 		return "payment.jsp";
 	}
@@ -182,7 +204,7 @@ public class HomeController {
 	}
 
 	@PostMapping("/signupdata")
-	public String saveuer(@Valid @ModelAttribute("userVo") AdminVo userVo, BindingResult result, ModelMap modell,
+	public String saveuser(@Valid @ModelAttribute("userVo") AdminVo userVo, BindingResult result, ModelMap modell,
 			Model model, HttpSession Session) throws ParseException {
 
 		System.out.println(Session.getAttribute("ses"));
@@ -247,8 +269,6 @@ public class HomeController {
 			@RequestParam("contactno") String contactno, @RequestParam("email") String email) {
 
 		System.out.println("in ajax signup admin");
-		// logic
-
 		try {
 			System.out.println(type);
 
@@ -267,7 +287,6 @@ public class HomeController {
 			String result = "data save succefully of type  " + " " + type + " and username and pass word is" + "   "
 					+ username + " " + password;
 
-			// model.addAttribute("admin", new AdminVo());
 			System.out.println("data save success");
 			return result;
 		} catch (Exception ex) {
@@ -285,14 +304,11 @@ public class HomeController {
 		System.out.println("in ajax");
 
 		try {
-// AdminVo adminVo=new AdminVo();
 			String admin = "admin";
 			List<Admin> adminList = adminRepo.findByTypeNot(admin);
 
-			// BeanUtils.copyProperties(adminVo, admin);
-
 			System.out.println("find all other than admin========>" + adminList);
-			// return userVo;
+
 			model.addAttribute("alluser", "adminList");
 			return adminList;
 		} catch (Exception ex) {
@@ -314,7 +330,7 @@ public class HomeController {
 			List<Admin> adminList = new ArrayList<Admin>();
 
 			if ("approvedexpert".equalsIgnoreCase(type)) {
-//String cc="0";
+
 				type = "expert";
 				adminList = adminRepo.findByTypeAndApproved(type, "0");
 			} else {
@@ -344,9 +360,6 @@ public class HomeController {
 
 		System.out.println("update/type in ajax");
 
-//if(type="" || emailid.equalsIgnoreCase("") )			
-//			
-
 		if (activeStatus != null) {
 
 			try {
@@ -366,7 +379,6 @@ public class HomeController {
 			try {
 				AdminVo adminVo = new AdminVo();
 				System.out.println("approving ===>");
-				// adminVo.setIsActive("0");
 				adminVo.setEmail(emailid);
 				adminVo.setApproved("1");
 				adminService.saveupdate(adminVo);
@@ -374,9 +386,7 @@ public class HomeController {
 			} catch (Exception ex) {
 				ex.getMessage();
 			}
-
 		}
-
 		if (type != null && !type.isBlank()) {
 			try {
 				AdminVo adminVo = new AdminVo();
@@ -398,9 +408,6 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping(value = "getpesticide")
 	public List<Pesticide> allpesticide(Model model) {
-
-		// List<HistoryVo> historyVo = null;
-
 		List<Pesticide> history = new ArrayList<>();
 		history = pesticideRepo.findAll();
 		System.out.println("history of products database=>" + history);
@@ -414,8 +421,6 @@ public class HomeController {
 	@ResponseBody
 	@PostMapping(value = "deletepesti")
 	public List<Pesticide> allpesticide(@RequestParam("id") String id, Model model) {
-
-		// List<HistoryVo> historyVo = null;
 
 		List<Pesticide> history = new ArrayList<>();
 		int idi = Integer.parseInt(id);
@@ -439,10 +444,7 @@ public class HomeController {
 	public List<Pesticide> pestiaddquantity(@RequestParam("id") String id, @RequestParam("quantity") String quantity,
 			Model model) {
 
-		// List<HistoryVo> historyVo = null;
-
 		List<Pesticide> history = new ArrayList<>();
-//		/int idi=Integer.parseInt(id);
 		try {
 			int idi = Integer.parseInt(id);
 			Optional<Pesticide> pesticide = pesticideRepo.findById(idi);
@@ -450,7 +452,6 @@ public class HomeController {
 			pesticide.get().setQuantity(quantity);
 			pesticideRepo.save(pesticide.get());
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 
@@ -467,16 +468,8 @@ public class HomeController {
 	public void pestiaddquantity(@RequestParam("productquantity") String quantity,
 			@RequestParam("productname") String productname, @RequestParam("productprice") String productprice,
 			Model model) {
-
-		// List<HistoryVo> historyVo = null;
-
-		// List<Pesticide> history = new ArrayList<>();
 		Pesticide pesticide = new Pesticide();
-//		/int idi=Integer.parseInt(id);
 		try {
-			// int idi=Integer.parseInt(id);
-
-			// pesticideRepo.findById(idi);
 			pesticide.setAddby(adminid);
 			pesticide.setQuantity(quantity);
 			pesticide.setName(productname);
@@ -500,8 +493,7 @@ public class HomeController {
 
 		// List<HistoryVo> historyVo = null;
 
-		List<Query> query = new ArrayList<>();
-		query = queryRepo.findAll();
+		List<Query> query = queryRepo.findByExpertid("0");
 
 		System.out.println("history of products database=>" + query);
 
@@ -560,11 +552,7 @@ public class HomeController {
 	@PostMapping(value = "savequery")
 	public void savequery(@RequestParam(name = "query") String queries, @RequestParam(name = "id") int id,
 			Model model) {
-		System.out.println("in savequery");
-		System.out.println(id);
-
 		Optional<Pesticide> ff = pesticideRepo.findById(id);
-
 		Query query = new Query();
 
 		String idd = Integer.toString(id);
@@ -573,11 +561,21 @@ public class HomeController {
 		String adminidd = Integer.toString(adminid);
 		query.setQueryuserid(adminidd);
 		query.setProductname(ff.get().getName());
-
+		query.setExpertid("0");
 		queryRepo.save(query);
 
 		System.out.println("save succesfully query");
 
+	};
+
+	@ResponseBody
+	@GetMapping(value = "seeorder")
+	public List<Order> savequery(Model model) {
+
+		List<Order> order = new ArrayList<Order>();
+		order = orderRepo.findAll();
+
+		return order;
 	};
 
 }

@@ -99,10 +99,12 @@ div.content {
 						
 						$("#allpesticide").hide(); 
 						$("#feedbackform").hide(); 
+						$("#productbuy").hide(); 
 						
 						
-						$(document).on('click', '#addpesti', function() {
-							  window.open('/payment', 'payment');
+						$(document).on('click', '#buybutton', function() {
+							var quantity=$("#orderquantity").val();
+							window.open('/payment?productid='+productid+'&quantity='+quantity, 'payment');
 							  return false;
 							});
 						var productid;
@@ -130,6 +132,23 @@ div.content {
 								}	
 						});
 						});
+						
+						
+						
+						
+						var productid;
+						
+						$(document).on('click', '#addpesti', function() {
+							alert();
+							
+							productid=$(this).attr('value');
+					
+							$("#productbuy").show();
+								
+							  return false;
+							});				
+						
+						
 						
 					
 						$(document).on('click', '#feedback', function() {
@@ -333,6 +352,19 @@ table.innerHTML += temp;
 		
 		  <input type="submit" value="Submit" id="submitanswer">
 </div>
+		
+		
+		
+		
+		
+		
+	<div id="productbuy">
+	
+			quantity:<input type="text" class="form-control" size="10" name="orderquantity" id="orderquantity"><br>
+			<button type="submit"  class="form-control"  value="" id="buybutton" style="color:blue;">BUY</button>
+		</div>
+		
+		
 		</div>
 		</div>
 		

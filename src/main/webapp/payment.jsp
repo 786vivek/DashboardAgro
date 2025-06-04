@@ -135,19 +135,63 @@ span.price {
 $(document)
 .ready(
 		function() {
-//alert();
-// var cc=${productname};
-// alert(cc);
+alert();
+
+ // alert(cc);
 
 		$(window).on('load', function () {             
-            var springAttribute= '${productname}';
-            var amount= '${amount}';
-            $("#productname").val(springAttribute)
-            $("#amount").val(amount);
-           
-            // alert(springAttribute);    
+            alert();
+             var cc='${productname}';
+             var dd='${quantity}';
+             var ee='${amount}';
+
+            $("#productname").val(cc)
+            $("#amount").val(ee);
+            $("#quantity").val(dd);
+            
+            alert(springAttribute);    
 		});
 	
+		
+		
+		
+		
+		$("#buybutton").click(function(e) {
+			
+			alert();
+		
+			
+			var amount=$("#amount").val();
+var quantity=$("#quantity").val();
+		
+				window.open('/paymentprocess?amount='+amount+'&quantity='+quantity, 'payment');
+			
+});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		});
 
 	</script>
@@ -163,11 +207,11 @@ i am payment
   <div class="col-75">
     <div class="container">
 
-      <form action="/paymentprocess">
+      
       
         <div class="row">
           <div class="col-50">
-              <p>${amount}<br>${productname}</p>
+           
             <h3>Billing Address</h3>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
@@ -192,6 +236,8 @@ i am payment
             </div>
           <label for="city"><i class="fa fa-object"></i> ProductName</label>
             <input type="text" id="productname" name="productname"  readonly>
+          <label for="city"><i class="fa fa-object"></i> quantity</label>
+            <input type="text" id="quantity" name="quantity"  readonly>
         
           </div>
 
@@ -230,8 +276,8 @@ i am payment
         <label>
           <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
         </label>
-        <input type="submit" value="Continue to checkout" class="btn">
-      </form>
+        <input type="submit" value="Continue to checkout" id="buybutton">
+
     </div>
   </div>
 

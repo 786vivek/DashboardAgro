@@ -95,13 +95,15 @@ div.content {
 	$(document)
 			.ready(
 					function() {
-	alert();
-	$("#button").hide();
+
+	$("#formbutton").hide();
 	$("#user").hide();
 	$("#username,#password").keypress(function() {
 	    if($(this).val().length > 3) {
 	         // Enable submit button
 	    	$("#user").hide();
+	    	//$("#formbutton").show();
+	          
 	    } else {
 	    	$("#user").show();
 	         // Disable submit button
@@ -112,7 +114,7 @@ div.content {
                return false;     
 		   }
 		   if($(this).val().length===9) {
-				$("#button").show();
+				$("#formbutton").show();
 //               return false;     
 		   }
            var charCode = (e.which) ? e.which : event.keyCode    
@@ -164,7 +166,7 @@ div.content {
                 <tr>
                     <td><form:label path="password">
                      Password:</form:label></td>
-                    <td><form:input path="password" class="form-control" required="required" min="4" max="10" /></td>
+                    <td><form:input path="password" class="form-control" required="required" min="4" max="10" type="password"/></td>
                 </tr>
                 <tr>
                     <td><form:label path="email">Email:</form:label></td>
@@ -193,7 +195,7 @@ div.content {
         </form:select>  
                 <tr/>
                 <tr>
-                    <td><input type="submit" id="button" value="Submit"/></td>
+                    <td><input type="submit" id="formbutton" value="Submit"/></td>
                 </tr>
             </table>
         </form:form>

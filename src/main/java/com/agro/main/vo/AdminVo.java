@@ -20,13 +20,13 @@ public class AdminVo {
 	public String username;
 
 
-	// @Column(name = "password")
+	//@Column(name = "password")
 	@NotNull
 	public String password;
 
 //@Column(name = "email")
-//	@Email
-	//@NotNull
+@Email
+@NotNull
 	public String email;
 
 //	@Pattern(regexp = "^(0|[1-9][0-9]*)$")

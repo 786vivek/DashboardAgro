@@ -106,6 +106,7 @@ div.content {
 						$("#pesticide").hide();
 						$("#pesticideadd").hide();
 						$("#filterType").hide();
+						$("#orderreport").hide();
 						
 						
 						
@@ -122,6 +123,8 @@ div.content {
 							$("#pesticide").hide();
 							$("#pesticideadd").hide();
 							$("#filterType").hide();
+							$("#orderreport").hide();
+							
 							$("#tablepesticide tr:gt(0)").remove();
 					
 						
@@ -312,8 +315,109 @@ table.innerHTML += temp;
 
 						});
 						
-						
-						
+						$(document).on('click', '#buttonorder', function() {
+							$("#signupform").hide();
+							$("#result").hide();
+							//	alert();
+							$("#user").hide();
+							$("#alluser").hide();
+							$("#edittype").hide();
+							$("#allpesticide").hide();
+							$("#pesticide").hide();
+							$("#pesticideadd").hide();
+							$("#filterType").hide();
+						//	$("#orderreport").hide();
+							
+							
+							
+							$("#orderreport").show();
+							$("#tableorder tr:gt(0)").remove();
+							$
+							.ajax({
+								url : 'seeorder',
+								type : 'GET',
+
+								success : function(
+										response) {
+
+									var result = response;
+									console.log(result);
+									var getemail;
+									var table = document
+											.getElementById('tableorder');
+
+									var temp = "<tr id='mytr'>";
+									console.log(temp);
+									var end = "</tr>";
+									var row;
+//														var edit="<input type="'button'" value="'edit'" id="'buttonedit'">;
+
+									$
+											.each(
+													response,
+													function(
+															i,
+															v) {
+														var temp = "<tr>";
+														console
+																.log("value");
+														console
+																.log(i);
+
+														$
+																.each(
+																		v,
+																		function(
+																				ind,
+																				val) {
+																			console
+																					.log(
+																							ind,
+																							val);
+																			console
+																					.log("vvk");
+
+																			row = "<td>"
+																					+ val
+																					+ "</td>";
+																			//}
+																			temp += row;
+									 										if (ind === "id") {
+
+																			getemail = val;
+
+									 										}
+																			//temp+=edit;
+																			console
+																					.log("temp after add edit "
+																							+ temp);
+																			//																myArray = response;
+																		});
+														//																				temp += "<td><input type='button'value='edit' id='editbutton' email='" +getemail+ "'/></td>"
+													//	temp += "<td><button name='email' id='buypesti' type='submit' value='" +getemail+ "'>Buy</button><td><button name='email' id='postqueries' type='submit' value='" +getemail+ "'>Postquerie</button><td><button name='email' id='feedback' type='submit' value='" +getemail+ "'>Feedback</button>";
+														temp += end;
+														table.innerHTML += temp;
+														console
+																.log(temp);
+													});
+									//temp+='<input type='"'button'"' value='"'updateblock'"' id='"'update'"''>';
+
+									console.log(temp);
+									temp += end;
+
+									table.innerHTML += temp;
+									},
+
+															error : function() {
+																alert("error");
+															}
+														});
+
+													
+													
+														
+														
+														});
 						var pesticideid;
 						
 						$(document).on('click', '#addpesti', function() {
@@ -743,6 +847,8 @@ table.innerHTML += temp;
   <a id="pesticidebutton">AllPesticide</a>
   <a id="addPesticideproduct">AddProduct</a>
   <a id="buttonall">AllUsers</a>
+  <a id="buttonorder">Orderhistory</a>
+
   	<a href="logout">LogOut</a>
   
 </div>
@@ -755,18 +861,12 @@ table.innerHTML += temp;
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-<!--     <div class="navbar-nav"> -->
-<!--       <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a> -->
-<!--       <a class="nav-item nav-link" href="#">Features</a> -->
-<!--       <a class="nav-item nav-link" href="#">Pricing</a> -->
-<!--       <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
-<!--     </div> -->
+
   </div>
 </nav>
 <div class="card mb=0" style="background-color: aliceblue; align-items:center;" >
   <div class="card-body  mb-0;">
 
-<!-- 	<input type="button" value="AddUser" id="addUser"> -->
 
 	<div id="signupform">
 <Strong>Signup Form </Strong>>
@@ -952,6 +1052,57 @@ table.innerHTML += temp;
 		
 		
 <!-- 			<button type="submit" value="" id="addPesticideproduct">AddPesticide</button> -->
+		
+		
+		
+		
+		
+		
+					<div id="orderreport">
+		<div class="container" id="orderpesticide">
+			<div id="allorder">
+				<table class="table table-striped" id="tableorder">
+					<thead>
+						<tr>
+							<th width="15%"
+								style="color: red ! important; text-align: left ! important;">ID</th>
+							
+							
+							<th width="25%"
+								style="color: red ! important; text-align: left ! important;">productname</th>
+							
+							<th width="15%"
+								style="color: red ! important; text-align: left ! important;">amount</th>
+							<th width="15%"
+								style="color: red ! important; text-align: left ! important;">buyerId</th>
+			<th width="15%"
+								style="color: red ! important; text-align: left ! important;">quantity</th>
+			<th width="15%"
+								style="color: red ! important; text-align: left ! important;">DateAndTime</th>
+
+						</tr>
+					</thead>
+					<tbody id="myTableorder">
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

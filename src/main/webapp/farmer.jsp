@@ -114,12 +114,40 @@ div.content {
 				
 				$(document).on('click', '#postqueries', function()  {
 			$("#postquery").show();
-				
+				productid=$("#postqueries").val();
+				alert("productid"+productid);
 				});
 				
 				
 				
 				
+				
+				$("#submitquery").click(function(e) {
+				
+					var query=$("#query").val();
+					$.ajax({
+						url : 'savequery',
+						type : 'POSt',
+						data : {
+							"query" : query,
+							"id":productid
+						},
+						success : function(response) {
+
+					
+alert("save success");
+						},
+						error : function() {
+							alert("error");
+						}	
+				});
+				});
+	
+					
+					
+					
+					
+					
 				$("#buybutton").click(function(e) {
 					
 					alert();
@@ -137,20 +165,7 @@ div.content {
 				
 						window.open('/payment?productid='+productid+'&quantity='+quantity, 'payment');
 					
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
 				
 				
 				});
@@ -190,8 +205,7 @@ div.content {
 							},
 							success : function(response) {
 
-								var result = response;
-								console.log(result);
+						
 
 							},
 							error : function() {

@@ -36,18 +36,18 @@ public class AdminServiceImpl implements AdminService {
 		try {
 
 			admin = adminRepo.findByEmailAndPassword(admin.getEmail(), admin.getPassword());
-		//	if(admin.getLoginvalue()=="0" || ("0").equalsIgnoreCase(admin.getLoginvalue())) {
-		//	BeanUtils.copyProperties(admin, adminVo);
+
 			adminVo.setId(admin.getId());
 			System.out.println("type from db====>" + admin.type);
-admin.setLoginvalue("1");
+	admin.setLoginvalue("1");
 			if ((adminVo.getType() == admin.getType() || adminVo.getType().equalsIgnoreCase(admin.getType())) && admin.getIsActive().equalsIgnoreCase("1") ){
 
 			adminRepo.save(admin);
 adminVo.setUsername(admin.getUsername());
+adminVo.setApproved(admin.getApproved());
 			return adminVo.getType();
 			}
-		//	}
+
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
